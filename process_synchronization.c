@@ -16,7 +16,8 @@ void *Thread1()
     {
         printf("%d\n", i);
     }
-    sem_post(&s1);
+    //sem_post(&s1);
+    sem_post(&s2);
 }
 
 // Function to be executed by the second thread
@@ -27,6 +28,7 @@ void *Thread2()
     {
         printf("%d\n", i);
     }
+    sem_post(&s1);
 }
 
 // Function to be executed by the third thread
@@ -38,7 +40,7 @@ void *Thread3()
     {
         printf("%d\n", i);
     }
-    //sem_post(&s1);
+    // sem_post(&s1);
 }
 int main()
 {
@@ -46,14 +48,14 @@ int main()
     sem_init(&s2, 0, 0);
 
     pthread_t tid, tid2, tid3;
+    
     pthread_create(&tid, NULL, Thread1, (void *)&tid);
     pthread_create(&tid2, NULL, Thread2, (void *)&tid2);
     pthread_create(&tid3, NULL, Thread3, (void *)&tid3);
-    pthread_exit(NULL);
 
     sem_destroy(&s1);
     sem_destroy(&s2);
 
-    pthread_exit (NULL);
+    pthread_exit(NULL);
     return 0;
 }
