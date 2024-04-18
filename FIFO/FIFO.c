@@ -1,3 +1,6 @@
+#include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
 #define MAXLEN 50
 typedef struct {
     int pages_num;
@@ -15,23 +18,13 @@ memory* memory_init(int n) {
     return m;
 }
 
-int memory_FIFO(int num){
-    memory* m = memory_init(num);
-    int input;
-    printf("Replacement Policy = FIFO\n");
-    printf("-------------------------------------\n");
-    printf("Page   Content of Frames\n");
-    printf("----   -----------------\n");
-    while(1){
-        scanf("%d", &input);
-        if(input == -1){
-            break;
+void display_pages(memory* m){
+    int num = m->pages_num;
+    for(int i=0; i < num; i++){
+        if(m->pages[i]){
+            printf("%02d ", m->pages[i]);
         }
-        add_process(m, input);
     }
-    printf("-------------------------------------\n");
-    printf("Number of page faults = %d\n", m->faults);//i love github copilot, and how well it reads my mind
-    return 0;
 }
 
 int search_process(memory* m, int process){
@@ -42,15 +35,6 @@ int search_process(memory* m, int process){
         }
     }
     return -1;
-}
-
-void display_pages(memory* m){
-    int num = m->pages_num;
-    for(int i=0; i < num; i++){
-        if(m->pages[i]){
-            printf("%02d ", m->pages[i]);
-        }
-    }
 }
 
 void add_process(memory* m, int process){
@@ -70,6 +54,25 @@ void add_process(memory* m, int process){
     m->used[m->curr] = 1;
     m->curr = (m->curr + 1) % m->pages_num;
     printf("%02d     ", process); display_pages(m); printf("\n");
+}
+
+int memory_FIFO(int num){
+    memory* m = memory_init(num);
+    int input;
+    printf("Replacement Policy = FIFO\n");
+    printf("-------------------------------------\n");
+    printf("Page   Content of Frames\n");
+    printf("----   -----------------\n");
+    while(1){
+        scanf("%d", &input);
+        if(input == -1){
+            break;
+        }
+        add_process(m, input);
+    }
+    printf("-------------------------------------\n");
+    printf("Number of page faults = %d\n", m->faults);//i love github copilot, and how well it reads my mind
+    return 0;
 }
 
 int main(){
