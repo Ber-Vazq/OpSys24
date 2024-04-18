@@ -52,17 +52,6 @@ void display_pages(memory* m){
         }
     }
 }
-int main(){
-    int num;
-    char algo[6];
-
-    scanf("%d", &num);
-    scanf("%s", algo);
-
-    if(strcmp(algo, "FIFO") == 0){
-        memory_FIFO(num);
-    }
-}
 
 void add_process(memory* m, int process){
     if (search_process(m, process) >= 0){
@@ -77,5 +66,20 @@ void add_process(memory* m, int process){
         printf("%02d F   ", process); display_pages(m); printf("\n");
         m->curr = (m->curr + 1) % m->pages_num;
         return;
+    }
+    m->used[m->curr] = 1;
+    m->curr = (m->curr + 1) % m->pages_num;
+    printf("%02d     ", process); display_pages(m); printf("\n");
+}
+
+int main(){
+    int num;
+    char algo[6];
+
+    scanf("%d", &num);
+    scanf("%s", algo);
+
+    if(strcmp(algo, "FIFO") == 0){
+        memory_FIFO(num);
     }
 }
